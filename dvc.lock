@@ -1,0 +1,18 @@
+schema: '2.0'
+stages:
+  data_cleaning:
+    cmd: python3 src/data/data_cleaning.py
+    deps:
+    - path: data/raw/BankChurners.csv
+      hash: md5
+      md5: c8c0eb266d15fba793ede87f94eddad8
+      size: 1510880
+    - path: src/data/data_cleaning.py
+      hash: md5
+      md5: ccfcf803d254aad1f30aec044a5d0074
+      size: 3118
+    outs:
+    - path: data/cleaned/bankchurners_cleaned.csv
+      hash: md5
+      md5: 7de99ae194b48fc671267d7486dacd03
+      size: 1066010
