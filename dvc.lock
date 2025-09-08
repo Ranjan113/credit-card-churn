@@ -16,3 +16,27 @@ stages:
       hash: md5
       md5: 7de99ae194b48fc671267d7486dacd03
       size: 1066010
+  data_preparation:
+    cmd: python3 src/data/data_preparation.py
+    deps:
+    - path: data/cleaned/bankchurners_cleaned.csv
+      hash: md5
+      md5: 7de99ae194b48fc671267d7486dacd03
+      size: 1066010
+    - path: src/data/data_preparation.py
+      hash: md5
+      md5: a785f65c28106b605311ef132509df84
+      size: 3135
+    params:
+      params.yaml:
+        Data_Preparation.random_state: 42
+        Data_Preparation.test_size: 0.2
+    outs:
+    - path: data/interim/test.csv
+      hash: md5
+      md5: 9463188595908b4f4dfdb4181e2a8f0b
+      size: 213024
+    - path: data/interim/train.csv
+      hash: md5
+      md5: c720ff541c0d6223a1037842331f3589
+      size: 852210
