@@ -47,3 +47,13 @@ stages:
       - src/models/train.py
     outs:
       - models/model.joblib
+
+  evaluate:
+    cmd: python3 src/models/evaluation.py
+    deps:
+      - models/model.joblib
+      - data/processed/test_trans.csv
+      - src/models/evaluation.py
+    metrics:
+      - metrics.json
+
