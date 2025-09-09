@@ -4,3 +4,5 @@ scikit-learn
 dvc
 imbalanced-learn
 xgboost
+matplotlib
+seaborn
