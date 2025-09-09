@@ -88,5 +88,4 @@ target/
 
 # Mypy cache
 .mypy_cache/
-/reports/figures
-/metrics.json
+
