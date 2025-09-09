@@ -1,6 +1,16 @@
 Data_Preparation:
   test_size: 0.20
   random_state: 42
+
 Data_Preprocessing:
   smote_random_state: 42
   smote_k_neighbors: 5
+
+Train:
+  XG_boost:
+    random_state: 42
+    n_estimators: 261
+    learning_rate: 0.05234950446452074
+    max_depth: 7
+    subsample: 0.9998532598274361
+    colsample_bytree: 0.570870702664962

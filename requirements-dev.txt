@@ -3,3 +3,4 @@ pandas
 scikit-learn
 dvc
 imbalanced-learn
+xgboost

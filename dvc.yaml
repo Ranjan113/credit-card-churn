@@ -33,3 +33,17 @@ stages:
       - data/processed/test_trans.csv
       - models/preprocessor.joblib
 
+  train:
+    cmd: python3 src/models/train.py
+    params:
+      - Train.XG_boost.random_state
+      - Train.XG_boost.n_estimators
+      - Train.XG_boost.learning_rate
+      - Train.XG_boost.max_depth
+      - Train.XG_boost.subsample
+      - Train.XG_boost.colsample_bytree
+    deps:
+      - data/processed/train_trans.csv
+      - src/models/train.py
+    outs:
+      - models/model.joblib

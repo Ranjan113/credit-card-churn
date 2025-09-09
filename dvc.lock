@@ -72,3 +72,27 @@ stages:
       hash: md5
       md5: dbe473e001a21054f65e35e05f197ca7
       size: 11885
+  train:
+    cmd: python3 src/models/train.py
+    deps:
+    - path: data/processed/train_trans.csv
+      hash: md5
+      md5: 4c1e8839fffa721ce78b8fd7f20881d8
+      size: 3427630
+    - path: src/models/train.py
+      hash: md5
+      md5: 9e93f2c858046f11617ac2b54f095686
+      size: 2593
+    params:
+      params.yaml:
+        Train.XG_boost.colsample_bytree: 0.570870702664962
+        Train.XG_boost.learning_rate: 0.05234950446452074
+        Train.XG_boost.max_depth: 7
+        Train.XG_boost.n_estimators: 261
+        Train.XG_boost.random_state: 42
+        Train.XG_boost.subsample: 0.9998532598274361
+    outs:
+    - path: models/model.joblib
+      hash: md5
+      md5: 2322d00af6c54cacf95e2cce2b0cd549
+      size: 1133090
