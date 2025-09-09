@@ -25,8 +25,8 @@ stages:
       size: 1066010
     - path: src/data/data_preparation.py
       hash: md5
-      md5: a785f65c28106b605311ef132509df84
-      size: 3135
+      md5: 475cf301d5559cda2b56adb75b18c7e7
+      size: 3114
     params:
       params.yaml:
         Data_Preparation.random_state: 42
@@ -40,3 +40,35 @@ stages:
       hash: md5
       md5: c720ff541c0d6223a1037842331f3589
       size: 852210
+  data_preprocessing:
+    cmd: python3 src/features/data_preprocessing.py
+    deps:
+    - path: data/interim/test.csv
+      hash: md5
+      md5: 9463188595908b4f4dfdb4181e2a8f0b
+      size: 213024
+    - path: data/interim/train.csv
+      hash: md5
+      md5: c720ff541c0d6223a1037842331f3589
+      size: 852210
+    - path: src/features/data_preprocessing.py
+      hash: md5
+      md5: 2b7d579c6ab7eb1b2567cc0eaba30dbd
+      size: 8215
+    params:
+      params.yaml:
+        Data_Preprocessing.smote_k_neighbors: 5
+        Data_Preprocessing.smote_random_state: 42
+    outs:
+    - path: data/processed/test_trans.csv
+      hash: md5
+      md5: a16f99509f7fa3032864cd5675124726
+      size: 491466
+    - path: data/processed/train_trans.csv
+      hash: md5
+      md5: 4c1e8839fffa721ce78b8fd7f20881d8
+      size: 3427630
+    - path: models/preprocessor.joblib
+      hash: md5
+      md5: dbe473e001a21054f65e35e05f197ca7
+      size: 11885

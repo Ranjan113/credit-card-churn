@@ -18,3 +18,18 @@ stages:
     outs:
       - data/interim/train.csv
       - data/interim/test.csv
+
+  data_preprocessing:
+    cmd: python3 src/features/data_preprocessing.py
+    params:
+      - Data_Preprocessing.smote_random_state
+      - Data_Preprocessing.smote_k_neighbors
+    deps:
+      - data/interim/train.csv
+      - data/interim/test.csv
+      - src/features/data_preprocessing.py
+    outs:
+      - data/processed/train_trans.csv
+      - data/processed/test_trans.csv
+      - models/preprocessor.joblib
+

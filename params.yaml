@@ -1,3 +1,6 @@
 Data_Preparation:
   test_size: 0.20
   random_state: 42
+Data_Preprocessing:
+  smote_random_state: 42
+  smote_k_neighbors: 5

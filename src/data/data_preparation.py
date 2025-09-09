@@ -58,7 +58,6 @@ def save_data(data: pd.DataFrame, save_path: Path) -> None:
 if __name__ == '__main__':
     # root path
     root_path = Path(__file__).parent.parent.parent
-    print(root_path)
     # data load path
     data_load_path = root_path / "data" / "cleaned" / "bankchurners_cleaned.csv"
     # save data directory
