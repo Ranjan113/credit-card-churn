@@ -1,5 +1,8 @@
 import numpy as np
 import pandas as pd
+from sklearn import set_config
+
+set_config(transform_output="pandas")
 
 cols_to_drop = ['Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1',
                 'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2',
@@ -46,5 +49,5 @@ def perform_data_cleaning(data: pd.DataFrame) -> pd.DataFrame:
     .pipe(engineer_features)
     .pipe(drop_columns,columns=cols_to_drop)
     )
-    # save the data
+
     return cleaned_data

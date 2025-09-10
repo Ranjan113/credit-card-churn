@@ -9,8 +9,8 @@ stages:
       size: 1510880
     - path: src/data/data_cleaning.py
       hash: md5
-      md5: ccfcf803d254aad1f30aec044a5d0074
-      size: 3118
+      md5: 15a5862aa94a0c51cd2bbb2ef273397f
+      size: 3132
     outs:
     - path: data/cleaned/bankchurners_cleaned.csv
       hash: md5
@@ -97,16 +97,12 @@ stages:
       md5: 2322d00af6c54cacf95e2cce2b0cd549
       size: 1133090
   evaluate:
-    cmd: python3 src/models/evaluation.py
+    cmd: python src/models/evaluation.py
     deps:
     - path: data/processed/test_trans.csv
       hash: md5
       md5: a16f99509f7fa3032864cd5675124726
       size: 491466
-    - path: data/processed/train_trans.csv
-      hash: md5
-      md5: 4c1e8839fffa721ce78b8fd7f20881d8
-      size: 3427630
     - path: models/model.joblib
       hash: md5
       md5: 2322d00af6c54cacf95e2cce2b0cd549

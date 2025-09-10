@@ -5,18 +5,33 @@ import pandas as pd
 import joblib
 from pathlib import Path
 from pydantic import BaseModel
-from src.data.data_cleaning import perform_data_cleaning
+from scripts.data_cleaning_utils import perform_data_cleaning
+from sklearn import set_config
+
+set_config(transform_output="pandas")
+
+# mention the columns like this
+CATEGORICAL_NOMINAL = ['Gender', 'Marital_Status', 'Income_Category', 'Card_Category']
+CATEGORICAL_ORDINAL = ['Education_Level']
+NUMERICAL_CONTINUOUS = ['Customer_Age', 'Dependent_count', 'Total_Relationship_Count', 
+                       'Months_Inactive_12_mon', 'Contacts_Count_12_mon', 'Credit_Limit',
+                       'Total_Amt_Chng_Q4_Q1', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio','Avg_Transaction_Value']
+NUMERICAL_IMPUTE_MEDIAN = ['Avg_Transaction_Value']
+CATEGORICAL_IMPUTE_MODE = ['Education_Level', 'Marital_Status', 'Income_Category']
 
 app = FastAPI()
 
-
+# root path
 root_path = Path(__file__).parent
 
+# model and preprocessor path
 model_path = root_path / "models" / "model.joblib"
 preprocessor_path = root_path / "models" / "preprocessor.joblib"
 
+# load model and preprocessor
 model = joblib.load(model_path)
 preprocessor = joblib.load(preprocessor_path)
+
 
 model_pipe = Pipeline(steps=[
     ('preprocess',preprocessor),
@@ -25,7 +40,7 @@ model_pipe = Pipeline(steps=[
 
 
 class PredictionInput(BaseModel):
-    # Define the input parameters required for making predictions
+    # define the input parameters required for making predictions
     CLIENTNUM: int
     Customer_Age: int  
     Gender: str 
@@ -57,7 +72,7 @@ def home():
 @app.post('/predict')
 def do_prediction(input_data: PredictionInput):
     X_test = pd.DataFrame(
-        data = {
+        {
             'CLIENTNUM': input_data.CLIENTNUM,
             'Customer_Age': input_data.Customer_Age,
             'Gender': input_data.Gender,
@@ -78,11 +93,13 @@ def do_prediction(input_data: PredictionInput):
             'Total_Trans_Ct': input_data.Total_Trans_Ct,
             'Total_Ct_Chng_Q4_Q1': input_data.Total_Ct_Chng_Q4_Q1,
             'Avg_Utilization_Ratio': input_data.Avg_Utilization_Ratio
-        }
+        },index=[0]
     )
 
+    # clean the input data
     df_cleaned = perform_data_cleaning(X_test)
 
+    # get the predictions
     prediction = model_pipe.predict(df_cleaned)[0]
     probability = model_pipe.predict_proba(df_cleaned)[0][1]
 
@@ -99,3 +116,4 @@ def do_prediction(input_data: PredictionInput):
 if __name__ == "__main__":
 
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
