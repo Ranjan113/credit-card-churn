@@ -62,7 +62,7 @@ def engineer_features(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def drop_columns(data: pd.DataFrame, columns:list) -> pd.DataFrame:
-    df = data.drop(columns=columns)
+    df = data.drop(columns=columns, errors="ignore")
     return df
 
 
@@ -97,7 +97,4 @@ if __name__ == "__main__":
     # clean data and save
     perform_data_cleaning(data=df, save_data_path=cleaned_data_save_path)
     logger.info('Data cleaned and saved')
-
-
-
 
