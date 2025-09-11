@@ -8,36 +8,7 @@ from pydantic import BaseModel
 from scripts.data_cleaning_utils import perform_data_cleaning
 from sklearn import set_config
 
-set_config(transform_output="pandas")
-
-# mention the columns like this
-CATEGORICAL_NOMINAL = ['Gender', 'Marital_Status', 'Income_Category', 'Card_Category']
-CATEGORICAL_ORDINAL = ['Education_Level']
-NUMERICAL_CONTINUOUS = ['Customer_Age', 'Dependent_count', 'Total_Relationship_Count', 
-                       'Months_Inactive_12_mon', 'Contacts_Count_12_mon', 'Credit_Limit',
-                       'Total_Amt_Chng_Q4_Q1', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio','Avg_Transaction_Value']
-NUMERICAL_IMPUTE_MEDIAN = ['Avg_Transaction_Value']
-CATEGORICAL_IMPUTE_MODE = ['Education_Level', 'Marital_Status', 'Income_Category']
-
-app = FastAPI()
-
-# root path
-root_path = Path(__file__).parent
-
-# model and preprocessor path
-model_path = root_path / "models" / "model.joblib"
-preprocessor_path = root_path / "models" / "preprocessor.joblib"
-
-# load model and preprocessor
-model = joblib.load(model_path)
-preprocessor = joblib.load(preprocessor_path)
-
-
-model_pipe = Pipeline(steps=[
-    ('preprocess',preprocessor),
-    ('model',model)
-])
-
+set_config(transform_output='pandas')
 
 class PredictionInput(BaseModel):
     # define the input parameters required for making predictions
@@ -63,15 +34,55 @@ class PredictionInput(BaseModel):
     Avg_Utilization_Ratio: float
 
 
+def load_transformer(transformer_path):
+    transformer = joblib.load(transformer_path)
+    return transformer
+
+def load_model(model_path):
+    model = joblib.load(model_path)
+    return model
 
 
+# mention the columns like this
+CATEGORICAL_NOMINAL = ['Gender', 'Marital_Status', 'Income_Category', 'Card_Category']
+CATEGORICAL_ORDINAL = ['Education_Level']
+NUMERICAL_CONTINUOUS = ['Customer_Age', 'Dependent_count', 'Total_Relationship_Count', 
+                       'Months_Inactive_12_mon', 'Contacts_Count_12_mon', 'Credit_Limit',
+                       'Total_Amt_Chng_Q4_Q1', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio','Avg_Transaction_Value']
+NUMERICAL_IMPUTE_MEDIAN = ['Avg_Transaction_Value']
+CATEGORICAL_IMPUTE_MODE = ['Education_Level', 'Marital_Status', 'Income_Category']
+
+# root path
+root_path = Path(__file__).parent
+
+# model and preprocessor path
+model_path = root_path / "models" / "model.joblib"
+preprocessor_path = root_path / "models" / "preprocessor.joblib"
+
+# load model and preprocessor
+model = load_model(model_path)
+preprocessor = load_transformer(preprocessor_path)
+
+
+model_pipe = Pipeline(steps=[
+    ('preprocess',preprocessor),
+    ('model',model)
+])
+
+
+# create the app
+app = FastAPI()
+
+
+# create the home endpoint
 @app.get('/')
 def home():
     return "Welcome to credit card churn prediction app."
 
+# create the predict endpoint
 @app.post('/predict')
 def do_prediction(input_data: PredictionInput):
-    X_test = pd.DataFrame(
+    pred_data = pd.DataFrame(
         {
             'CLIENTNUM': input_data.CLIENTNUM,
             'Customer_Age': input_data.Customer_Age,
@@ -97,7 +108,8 @@ def do_prediction(input_data: PredictionInput):
     )
 
     # clean the input data
-    df_cleaned = perform_data_cleaning(X_test)
+    df_cleaned = perform_data_cleaning(pred_data)
+
 
     # get the predictions
     prediction = model_pipe.predict(df_cleaned)[0]
@@ -115,5 +127,5 @@ def do_prediction(input_data: PredictionInput):
 
 if __name__ == "__main__":
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app="app:app", host="0.0.0.0", port=8000)
 

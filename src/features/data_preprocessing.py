@@ -159,7 +159,7 @@ if __name__ == "__main__":
         ('encoding',encode),
         ('pt',power_transform)
         ])
-    
+
 
     # load the train and test data
     train_df = load_data(train_data_path)
@@ -186,6 +186,8 @@ if __name__ == "__main__":
     train_preprocessor(preprocessor=preprocessor, data=X_train)
     logger.info('Preprocessor is trained')
 
+    # ensure pipeline outputs pandas DataFrame
+    preprocessor.set_output(transform="pandas")
 
     # transform the data
     X_train_trans = perform_transformation(preprocessor=preprocessor, data=X_train)
