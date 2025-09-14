@@ -30,5 +30,6 @@ USER appuser
 
 EXPOSE 8080
 
-# Run app with gunicorn + uvicorn worker
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8080"]
+# Run app with uvicorn worker
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+
