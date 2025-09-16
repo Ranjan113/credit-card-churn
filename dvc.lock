@@ -97,7 +97,7 @@ stages:
       md5: 2322d00af6c54cacf95e2cce2b0cd549
       size: 1133090
   evaluate:
-    cmd: python src/models/evaluation.py
+    cmd: python3 src/models/evaluation.py
     deps:
     - path: data/processed/test_trans.csv
       hash: md5

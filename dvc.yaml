@@ -49,7 +49,7 @@ stages:
       - models/model.joblib
 
   evaluate:
-    cmd: python src/models/evaluation.py
+    cmd: python3 src/models/evaluation.py
     deps:
       - src/models/evaluation.py
       - models/model.joblib
